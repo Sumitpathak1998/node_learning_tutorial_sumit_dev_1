@@ -1,0 +1,2 @@
+This is initial Data for Node Sync
+This is appended data in the file
