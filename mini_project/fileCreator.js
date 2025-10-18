@@ -2,7 +2,6 @@ import readline from "readline";
 import { fileURLToPath } from 'url';
 import fs from "fs";
 import path from "path";
-import { error } from "console";
 
 // Process for take user input 
 const rl = readline.createInterface({
