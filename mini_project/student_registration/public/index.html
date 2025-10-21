@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="sub-container" style="margin-right: 5%;">
+            <h1>Student Registration</h1>
+            <form id="registration_form">
+                <div>
+                    <label for="name">Enter Name:</label>
+                    <input type="text" name="name" id="name" required>
+                </div>
+                <div>
+                    <label for="mail">Email:</label>
+                    <input type="email" name="mail" id="mail" required>
+                </div>
+                <div>
+                    <label for="age">Enter Age:</label>
+                    <input type="text" name="age" id="age" required>
+                </div>
+                <div>
+                    <label for="percentage">Enter Percentage:</label>
+                    <input type="text" name="percentage" id="percentage" required>
+                </div>
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+        <div class="sub-table">
+            <div class="table-wrapper">
+                <table id="student_table">
+                    <thead>
+                        <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student_record">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+
+        async function fetchWithPost(args) {
+            try {
+                const response = await fetch('/student_registration', {
+                    method : "POST", 
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    body : JSON.stringify(args)
+                });
+                if(!response.ok) {
+                    return await response.text();
+                } 
+                let result = await response.json();
+                return result;
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
+        
+        document.getElementById("registration_form").addEventListener("submit" , async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            let finalObj = Array.from(formData.entries()).reduce((acc,[key,value]) => {
+                acc[key] = value;
+                return acc;
+            } , {});
+            const response = await fetchWithPost(finalObj);
+            console.log(response);
+            if (typeof(response) === 'object') {
+                alert(response.message);
+                e.target.reset();
+            } else {
+                alert(response);
+            }
+            
+        })
+
+        const showTheListOfStudent = async () => {
+            let resposne = await fetch("/showStudent", {
+                method : "GET"
+            });
+            if(!resposne.ok) {
+                alert(resposne.text());
+            }
+            let studentRecord = await resposne.json();
+            let tbody = document.getElementById("student_record");
+            for (const key in studentRecord) {
+                let tr = document.createElement("tr");
+                for (const details in studentRecord[key]) {
+                    let td = document.createElement("td");
+                    td.innerHTML = studentRecord[key][details];
+                    tr.append(td);
+                }          
+                tbody.appendChild(tr);      
+            }
+
+        }
+        showTheListOfStudent();
+    </script>
+</body>
+</html>
