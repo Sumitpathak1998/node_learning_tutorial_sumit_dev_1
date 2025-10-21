@@ -1,0 +1,17 @@
+{
+  "name": "express_tutorial",
+  "version": "1.0.0",
+  "description": "\"This is details express js tutorial\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --env-file=.env --watch app.js"
+  },
+  "author": "Sumit Pathak",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "zod": "^4.1.12"
+  }
+}
